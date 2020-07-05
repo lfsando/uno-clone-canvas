@@ -35,7 +35,7 @@ class Card {
       movingTop: false,
       hovering: false,
       rotation: 0,
-      sizeRatio: 1,
+      sizeRatio: 0.8,
       frontFacing: true,
       grabbing: false,
       inHand: true
