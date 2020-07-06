@@ -1,13 +1,14 @@
-class Logger {
-  textarea: HTMLTextAreaElement
-  constructor(textarea: HTMLTextAreaElement) {
-    this.textarea = textarea;
-  }
+export class Logger {
+    textarea: HTMLTextAreaElement;
 
-  log(msg: string | number) {
-    this.textarea.innerHTML += msg + '\n';
-    this.textarea.scrollTop = this.textarea.scrollHeight;
-    return msg
-  }
+    constructor(textarea: HTMLTextAreaElement) {
+        this.textarea = textarea;
+    }
+
+    public log(msg: string | number): string {
+        this.textarea.innerHTML += `${msg}\n`;
+        this.textarea.scrollTop = this.textarea.scrollHeight;
+        return msg.toString();
+    }
 }
-const logger: Logger = new Logger(<HTMLTextAreaElement>document.getElementById('log'));
+export const logger: Logger = new Logger(<HTMLTextAreaElement>document.getElementById('log'));

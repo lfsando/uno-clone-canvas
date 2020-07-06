@@ -1,62 +1,112 @@
-interface GameConfig {
-  nCards: number
-};
-interface GameEvent {
-
-};
-
-interface MousePosition {
-  x: number
-  y: number
+export interface CardInterface {
+    ctx: CanvasRenderingContext2D;
+    config: CardConfigTypeInterface;
+    color: string;
+    x: number;
+    y: number;
+    initialX: number;
+    initialY: number;
+    state: CardStateInterface;
+    offsetX: number;
+    offsetY: number;
+    width: number;
+    height: number;
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    update(): void;
+    draw(): void;
+    setPos(x: number, y: number): Record<string, number>;
+    shake(): void;
+    highlight(): void;
+    setState(state: keyof CardStateInterface, value: number | boolean): void;
+    setSizeRatio(ratio: number): number;
+    isHovering(mouseX: number, mouseY: number): boolean;
+    getRGB(): string;
 }
 
-interface GameState {
-  grabbedCard: Card
-  hoverCard: Card
-  clicking: boolean
-  mouseDownPosition: MousePosition
-  mouseUpPosition: MousePosition
-  mouseLastPosition: MousePosition
-};
-
-interface CardState {
-  [state: string]: any
-  sizeRatio: number
-  shaking: boolean
-  movingTop: boolean
-  hovering: boolean
-  grabbing: boolean
-  rotation: number
-  animationRotationDirection: number
-  inHand: boolean
-};
-
-
-
-type CardType = 'NUMBER' | 'SKIP' | 'REVERSE' | 'DRAW_TWO' | 'WILD' | 'WILD_DRAW_FOUR';
-type CardColor = 'RED' | 'YELLOW' | 'GREEN' | 'BLUE' | 'ANY';
-enum CardColorEnum {
-  RED,
-  YELLOW,
-  GREEN,
-  BLUE,
-  ANY
-}
-enum CardTypeEnum {
-  NUMBER,
-  SKIP,
-  REVERSE,
-  DRAW_TWO,
-  WILD,
-  WILD_DRAW_FOUR
-
+export interface HandInterface {
+    ctx: CanvasRenderingContext2D;
+    cards: CardInterface[];
+    bottomMargin: number;
+    initHand(): void;
+    addCard(card: CardInterface): CardInterface;
+    update(): void;
+    drawHand(): void;
 }
 
-type CardValueType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-interface CardConfigType {
-  type: CardType
-  value?: CardValueType
-  color: CardColor
-};
+export interface MousePosition {
+    x: number;
+    y: number;
+}
 
-type FontFamilyType = 'Verdana' | 'Arial' | 'Arial Black' | 'Comic Sans MS';
+export interface GameStateInterface {
+    grabbedCard: CardInterface;
+    hoverCard: CardInterface;
+    clicking: boolean;
+    mouseDownPosition: MousePosition;
+    mouseUpPosition: MousePosition;
+    mouseLastPosition: MousePosition;
+}
+
+export interface GameConfigInterface {
+    nCards: number;
+}
+export interface GameEventInterface {
+    type: string;
+}
+
+export interface UnoInterface {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    width: number;
+    height: number;
+    state: GameStateInterface;
+    events: GameEventInterface[];
+    gameConfig: GameConfigInterface;
+    running: boolean;
+    cards: CardInterface[];
+    hand: HandInterface;
+    start(): void;
+    setContextCursor(cursor: string): string;
+    grabCard(card: CardInterface): CardInterface;
+}
+
+export interface CardStateInterface {
+    [state: string]: string | number | boolean;
+    sizeRatio: number;
+    shaking: boolean;
+    highlighting: boolean;
+    hovering: boolean;
+    grabbing: boolean;
+    rotation: number;
+    animationRotationDirection: number;
+    inHand: boolean;
+}
+
+export type CardActionType = 'NUMBER' | 'SKIP' | 'REVERSE' | 'DRAW_TWO' | 'WILD' | 'WILD_DRAW_FOUR';
+export type CardColorType = 'RED' | 'YELLOW' | 'GREEN' | 'BLUE' | 'ANY';
+export type CardNumberType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type FontFamilyType = 'Verdana' | 'Arial' | 'Arial Black' | 'Comic Sans MS';
+export enum CardColorEnum {
+    RED,
+    YELLOW,
+    GREEN,
+    BLUE,
+    ANY,
+}
+export enum CardTypeEnum {
+    NUMBER,
+    SKIP,
+    REVERSE,
+    DRAW_TWO,
+    WILD,
+    WILD_DRAW_FOUR,
+}
+
+export interface CardConfigTypeInterface {
+    type: CardActionType;
+    value?: CardNumberType;
+    color: CardColorType;
+}

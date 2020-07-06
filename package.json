@@ -4,20 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write src/**/*.{js, ts}",
-    "lint": "eslint --fix src/**/*.{js, ts}"
+    "dev": "npx webpack --watch --mode development",
+    "typescript": "tsc --watch",
+    "prod": "npx webpack --watch --mode production",
+    "format": "prettier --write src",
+    "lint": "eslint src --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
+    "circular-dependency-plugin": "^5.2.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb-typescript-prettier": "^3.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "inline-source-map": "^0.6.2",
     "prettier": "^2.0.5",
+    "ts-loader": "^7.0.5",
     "typescript": "^4.0.0-dev.20200703",
-    "typescript-eslint": "0.0.1-alpha.0"
+    "typescript-eslint": "0.0.1-alpha.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   }
 }

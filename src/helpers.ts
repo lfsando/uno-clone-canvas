@@ -1,120 +1,72 @@
+export const milimeterToPixel = (mm: number): number => mm * 3.779527559;
 
-const milimeterToPixel = (mm: number) => <number>(mm * 3.779527559);
+export const roundedRect = (
+    context: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+    fillColor: string,
+    strokeColor: string,
+    lineWidth: number,
+    fill: boolean,
+    rotation?: number,
+): void => {
+    context.save();
+    let xPos = x;
+    let yPos = y;
+    let strokeWidth = lineWidth;
 
-const roundedRect = (
-  context: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-  fillColor: string,
-  strokeColor: string,
-  lineWidth: number,
-  fill: boolean,
-  rotation?: number
-) => {
+    if (rotation) {
+        context.translate(x + width / 2, y + height / 2);
+        context.rotate((rotation || 0 * Math.PI) / 180);
 
-  context.save();
-  if (rotation === undefined) rotation = 0;
+        context.fillStyle = 'blue';
+        context.fillRect(0, 0, 2, 2);
+        xPos = -width / 2;
+        yPos = -height / 2;
+    }
 
-  if (rotation) {
-    context.translate(x + width / 2, y + height / 2);
-    context.rotate(rotation * Math.PI / 180);
+    context.strokeStyle = strokeColor;
+    context.fillStyle = fillColor;
 
-    context.fillStyle = 'blue';
-    context.fillRect(0, 0, 2, 2);
-    x = -width / 2;
-    y = -height / 2;
-  }
+    if (fill) {
+        strokeWidth *= 2;
+    }
 
-  context.strokeStyle = strokeColor;
-  context.fillStyle = fillColor;
+    context.lineWidth = strokeWidth;
 
-  if (fill) {
-    lineWidth *= 2;
-  }
-
-  context.lineWidth = lineWidth;
-
-  context.beginPath();
-  context.moveTo(x + radius, y);
-  context.quadraticCurveTo(x, y, x, y + radius);
-  context.lineTo(x, y + height - radius);
-  context.quadraticCurveTo(x, y + height, x + radius, y + height);
-  context.lineTo(x + width - radius, y + height);
-  context.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
-  context.lineTo(x + width, y + radius);
-  context.quadraticCurveTo(x + width, y, x + width - radius, y);
-  context.closePath();
-  context.stroke();
-  if (fill) {
-    context.fill();
-  }
-  context.restore();
-}
-
-
-const debounce = (func: Function, wait: number) => {
-  let timeout: number;
-  return function executedFunction(...args: any[]) {
-    const later = () => {
-      timeout = null;
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+    context.beginPath();
+    context.moveTo(xPos + radius, yPos);
+    context.quadraticCurveTo(xPos, yPos, xPos, yPos + radius);
+    context.lineTo(xPos, yPos + height - radius);
+    context.quadraticCurveTo(xPos, yPos + height, xPos + radius, yPos + height);
+    context.lineTo(xPos + width - radius, yPos + height);
+    context.quadraticCurveTo(xPos + width, yPos + height, xPos + width, yPos + height - radius);
+    context.lineTo(xPos + width, yPos + radius);
+    context.quadraticCurveTo(xPos + width, yPos, xPos + width - radius, yPos);
+    context.closePath();
+    context.stroke();
+    if (fill) {
+        context.fill();
+    }
+    context.restore();
 };
 
+export const debounce = (func: (...args: unknown[]) => unknown, wait: number): (() => unknown) => {
+    let timeout: number;
 
-const _roundedRect = (
-  context: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-  fillColor: string,
-  strokeColor: string,
-  lineWidth: number,
-  fill: boolean,
-  rotation?: number
-) => {
+    return function executedFunction(...args: unknown[]) {
+        const later = () => {
+            timeout = null;
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
 
-  if (rotation === undefined) rotation = Number((<HTMLInputElement>document.getElementById('rot')).value);
-  context.save();
-  context.translate(x, y);
-
-  if (rotation) {
-    context.fillStyle = 'blue';
-    context.fillRect(5, 5, 10, 10);
-    context.rotate(rotation * Math.PI / 180);
-  }
-
-
-  context.strokeStyle = strokeColor;
-  context.fillStyle = fillColor;
-  if (fill) {
-    lineWidth *= 2;
-  }
-  context.lineWidth = lineWidth;
-
-  context.beginPath();
-  context.moveTo(x + radius, y);
-  context.quadraticCurveTo(x, y, x, y + radius);
-  context.lineTo(x, y + height - radius);
-  context.quadraticCurveTo(x, y + height, x + radius, y + height);
-  context.lineTo(x + width - radius, y + height);
-  context.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
-  context.lineTo(x + width, y + radius);
-  context.quadraticCurveTo(x + width, y, x + width - radius, y);
-  context.closePath();
-  context.stroke();
-  if (fill) {
-    context.fill();
-    context.fillStyle = 'black';
-    context.fill();
-  }
-  context.restore();
-}
+export const getFont = (size: number, family: string): string => {
+    return `${size}px ${family}`;
+};
